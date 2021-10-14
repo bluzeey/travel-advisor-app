@@ -2,21 +2,12 @@ import React,{useState} from 'react'
 import {CircularProgress,Grid,Typography,InputLabel,MenuItem,FormControl, Select} from '@material-ui/core'
 import useStyles from './styles'
 import {PlaceDetails} from '../'
-const List = () => {
+const List = ({places}) => {
 
     const classes=useStyles()
     const [type, setType] = useState('restaurant')
     const [rating, setRating] = useState('restaurant')
 
-    const places=[{name:'Cool Place'},
-                  {name:'Best Beer'},
-                  {name:'Best Steak'},
-                  {name:'Cool Place'},
-                  {name:'Best Beer'},
-                  {name:'Best Steak'},
-                  {name:'Cool Place'},
-                  {name:'Best Beer'},
-                  {name:'Best Steak'},]
     return (
         <div className={classes.container}>
             <Typography variant="h4">

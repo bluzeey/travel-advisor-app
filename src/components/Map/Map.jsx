@@ -4,7 +4,7 @@ import { Paper, Typography, useMediaQuery } from '@material-ui/core';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import Rating from '@material-ui/lab/Rating';
 import useStyles from './styles'
-const Map = ({setCoordinates,setBounds,coordinates}) => {
+const Map = ({setCoordinates,setBounds,coordinates,places}) => {
     const classes=useStyles()
     const isMobile=useMediaQuery('(min-width:600px)')
     
@@ -22,7 +22,31 @@ const Map = ({setCoordinates,setBounds,coordinates}) => {
                      setBounds({ne:e.marginBounds.ne,sw:e.marginBounds.sw})
                  }}
                  onChildClick={''}>
-
+                 {places?.map((place)=>(
+                     <div
+                      className={classes.markerContainer}
+                      lat={Number(place.latitude)}
+                      lng={Number(place.longitude)}
+                      key={i}
+                      >
+                      {
+                          isMobile?(
+                              <LocationOnOutlinedIcon color="primary" fontSize="large"/>
+                          ):(
+                              <Paper elevation={3} className={classes.paper}>
+                                <Typography className={classes.typography} variant="subtitle2">
+                                    {place.name}
+                                </Typography>
+                                <img
+                                   className={classes.pointer}
+                                   src={place.photo?place.photo.images.large.url:'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'}
+                                   alt={place.name}
+                                   />
+                              </Paper>
+                          )
+                      }
+                     </div>
+                 ))}
             </GoogleMapReact>
         </div>
     )
