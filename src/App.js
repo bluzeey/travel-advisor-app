@@ -6,30 +6,45 @@ import {getPlacesData} from './api'
 import{Header,List,Map,PlaceDetails} from './components/'
 const App = () => {
     const [places,setPlaces]=useState([])
+    const [filteredPlaces, setFilteredPlaces] = useState([])
     const [coordinates,setCoordinates]=useState({lat:0,lng:0});
     const [bounds,setBounds]=useState(null)
-    
+    const [childClicked, setChildClicked] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [type,setType]=useState('restaurants')
+    const [rating,setRating]=useState('')
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(({coords:{latitude,longitude}})=>{
             setCoordinates({lat:latitude,lng:longitude})
         })
         
-    }, [])
+    }, []);
+
+    useEffect(()=>{
+      const filteredPlaces=places.filter((place)=>place.rating>rating)
+
+      setFilteredPlaces(filteredPlaces)
+    },[rating])
     
     useEffect(()=>{
-        getPlacesData(bounds?.sw,bounds?.ne).then((data)=>{
-            console.log(data)
-            
+        getPlacesData(type,bounds?.sw,bounds?.ne).then((data)=>{
             setPlaces(data);
+            setIsLoading(false)
         })
-    },[bounds,coordinates])
+    },[type,bounds,coordinates])
     return (
         <>
             <CssBaseline/>
             <Header/>
             <Grid container spacing={3} style={{width:'100%'}}>
                 <Grid item xs={12} md={4}>
-                    <List places={places}/>
+                    <List places={places}
+                    childClicked={childClicked}
+                    isLoading={isLoading}
+                    type={type}
+                    setType={setType}
+                    rating={rating}
+                    setRating={setRating}/>
                     </Grid>
                 <Grid item xs={12} md={8}>
                     <Map
@@ -37,6 +52,7 @@ const App = () => {
                        setBounds={setBounds}
                        coordinates={coordinates}
                        places={places}
+                       setChildClicked={setChildClicked}
                     />
                     </Grid>
             </Grid>
