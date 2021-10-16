@@ -47,7 +47,7 @@ const App = () => {
     return (
         <>
             <CssBaseline/>
-            <Header setCoordinates={setCoordinates}
+            <Header
             onLoad={onLoad} onPlaceChanged={onPlaceChanged} />
             <Grid container spacing={3} style={{width:'100%'}}>
                 <Grid item xs={12} md={4}>
